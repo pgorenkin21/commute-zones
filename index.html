@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Commute Zones</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <aside id="sidebar">
+    <header>
+      <h1>Commute Zones</h1>
+      <p class="sub">Find the parts of London where everyone in your group gets to work within the limit you set.</p>
+    </header>
+
+    <section>
+      <div class="section-head">
+        <h2>People</h2>
+        <button id="addPerson" class="ghost">+ Add person</button>
+      </div>
+      <div id="people"></div>
+    </section>
+
+    <section>
+      <h2>Settings</h2>
+      <div class="grid2">
+        <label>Max commute (min)
+          <input id="maxMin" type="number" min="10" max="120" step="5">
+        </label>
+        <label>Arrive by
+          <input id="arrive" type="time">
+        </label>
+        <label>Grid spacing
+          <select id="spacing">
+            <option value="0.8">0.8 km (fine)</option>
+            <option value="1.2">1.2 km</option>
+            <option value="1.6">1.6 km</option>
+            <option value="2.4">2.4 km (fast)</option>
+          </select>
+        </label>
+        <label class="check"><input id="londonOnly" type="checkbox"> Greater London only</label>
+      </div>
+      <div id="modes" class="modes"></div>
+      <div class="grid2">
+        <label>Property type
+          <select id="rentType">
+            <option value="room">Room in a shared house</option>
+            <option value="studio">Studio</option>
+            <option value="1">1 bedroom</option>
+            <option value="2">2 bedrooms</option>
+            <option value="3">3 bedrooms</option>
+            <option value="4">4+ bedrooms</option>
+          </select>
+        </label>
+        <label>Max rent (£ / month)
+          <input id="maxRent" type="number" min="0" step="50" placeholder="No limit">
+        </label>
+      </div>
+      <p id="rentHint" class="hint"></p>
+      <details>
+        <summary>TfL API key (optional, free)</summary>
+        <p class="hint">With no key, TfL is slow: about one lookup every 2–3 seconds. A free key from
+          <a href="https://api-portal.tfl.gov.uk/" target="_blank" rel="noopener">api-portal.tfl.gov.uk</a> makes it about 8× faster.</p>
+        <input id="appKey" type="text" placeholder="app_key" autocomplete="off">
+      </details>
+    </section>
+
+    <section>
+      <div class="run-row">
+        <button id="run" class="primary">Find zones</button>
+        <button id="stop" class="ghost" hidden>Stop</button>
+      </div>
+      <p id="estimate" class="hint"></p>
+      <div id="progress" hidden><div id="bar"></div></div>
+      <p id="status" class="hint"></p>
+      <label class="check"><input id="hideFail" type="checkbox"> Hide areas that don't work</label>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h2>Zones</h2>
+        <select id="zoneSort" class="compact">
+          <option value="commute">Shortest commute first</option>
+          <option value="rent">Cheapest rent first</option>
+        </select>
+      </div>
+      <div id="zones"><p class="hint">Run a search to see the neighbourhoods that work for everyone.</p></div>
+    </section>
+
+    <footer class="hint">
+      Journey times come from the TfL Journey Planner for the next Tuesday, Wednesday or Thursday, door to door with walking included.
+      Results are cached in this browser, so running the search again is fast.
+      Rents are median rents actually paid, by postcode district, from the ONS for April 2025 to March 2026. Where a district has too few rents recorded, the borough figure is used instead.
+      <button id="clearCache" class="link">Clear cache</button>
+    </footer>
+  </aside>
+
+  <main id="map"></main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="rents.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
